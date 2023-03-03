@@ -2,7 +2,8 @@
 sequenceDiagram
   participant browser
   participant server
-  note over browser: browser starts executing js-code <br> that requests JSON data from server
+  
+  note right of browser: browser starts executing js-code <br> that requests JSON data from server
   browser->>server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
   Note over server: Server JS action updates <br> notes via (notes.push)
   server-->>browser: URL Redirect (302) to /notes
