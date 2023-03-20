@@ -31,7 +31,8 @@ const App = () => {
   const [votes, setVotes] = useState(initVotes)
   const newVotes = () => {
     const votesCopy = [...votes]
-    votesCopy[selected] += 1
+    const selectedCopy = selected
+    votesCopy[selectedCopy] += 1
     setVotes(votesCopy)
   }
 
