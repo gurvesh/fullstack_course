@@ -6,10 +6,16 @@ const App = () => {
   ]) 
   const [newName, setNewName] = useState('')
 
-  const addPerson = (event) =>{
+  const addPerson = (event) => {
     event.preventDefault()
-    setPersons(persons.concat({name: newName}))
-    setNewName('')
+    const newPerson = {name: newName}
+    console.log(persons);
+    if (persons.some(x => x.name.toLowerCase() === newName.toLowerCase())) {
+      alert(`${newName} is already added to the phonebook`)
+    } else {
+      setPersons(persons.concat({name: newName}))
+      setNewName('')
+    }
   }
 
   const handleNewName = (event) => {
@@ -27,7 +33,7 @@ const App = () => {
           <button type="submit">add</button>
         </div>
       </form>
-      <div>debug: {newName}</div>
+      {/* <div>debug: {newName}</div> */}
       <h2>Numbers</h2>
       {persons.map(person => <div key={person.name}>{person.name}</div>)}
     </div>
