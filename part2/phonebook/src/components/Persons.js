@@ -7,7 +7,9 @@ const Persons = ({personsToShow, deletePersonHandler}) => {
             <tr key={person.id}>
               <td>{person.name}</td>
               <td>{person.number}</td>
-              <td><button onClick={() => deletePersonHandler(person)}>delete</button></td>
+              <td>
+                <button onClick={() => deletePersonHandler(person)}>delete</button>
+              </td>
             </tr>
         )}
       </tbody>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import personService from './services/persons'
+import personService from './services/personsDB'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -24,7 +24,19 @@ const App = () => {
       id: persons.length + 1}
     // console.log(persons);
     if (persons.some(x => x.name.toLowerCase() === newName.toLowerCase())) {
-      alert(`${newName} is already added to the phonebook`)
+      const person = persons.find(x => x.name.toLowerCase() === newName.toLowerCase())
+      if (person.number === newNumber) {
+        alert(`Nothing to update. ${newName} already exists with number ${newNumber}`)
+      } else {
+        if (window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
+          const changedPerson = { ...person, number: newNumber }
+          personService
+          .update(person.id, changedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(n => n.id !== person.id? n : returnedPerson))
+          })
+        }
+      }
     } else {
       personService
         .create(newPerson)
@@ -36,6 +48,7 @@ const App = () => {
     }
   }
 
+  // I defined it as a function, to enable passing the function itself to component Persons
   function deletePersonHandler(person) {
     if (window.confirm(`Really delete ${person.name}?`)) {
       personService
