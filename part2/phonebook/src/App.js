@@ -48,8 +48,7 @@ const App = () => {
     }
   }
 
-  // I defined it as a function, to enable passing the function itself to component Persons
-  function deletePersonHandler(person) {
+  const deletePersonHandler = (person) => {
     if (window.confirm(`Really delete ${person.name}?`)) {
       personService
       .deleteEntry(person.id)
