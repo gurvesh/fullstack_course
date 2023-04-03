@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import personService from './services/personsDB'
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filteringString, setNewFilteringString] = useState('')
+  const [showMessage, setShowMessage] = useState({message: null, type: 'normal'})
 
   useEffect(() => {
     personService
@@ -34,6 +36,12 @@ const App = () => {
           .update(person.id, changedPerson)
           .then(returnedPerson => {
             setPersons(persons.map(n => n.id !== person.id? n : returnedPerson))
+            setShowMessage({message: `${person.name} updated with new number`, type: 'normal'})
+          })
+          .catch(error => {
+            setShowMessage(
+              {message: `Information of ${person.name} has already been removed from server`,
+               type: 'error'})
           })
         }
       }
@@ -44,8 +52,13 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+          setShowMessage({message: `Added ${newName}`, type: 'normal'})
         })
     }
+    
+    setTimeout(() => {
+      setShowMessage({message: null, type: 'normal'})
+    }, 5000)
   }
 
   const deletePersonHandler = (person) => {
@@ -80,6 +93,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={showMessage.message} type={showMessage.type} />
 
       <Filter filteringString={filteringString} handleFilter={handleFilter} />
 
